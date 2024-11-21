@@ -8,9 +8,12 @@ public class PowerBarsManager : MonoBehaviour
     public Slider powerBarSingle;
     public Slider powerBarSingleWithHandle ;
     public float pointerSpeed = 50;
-    public Color[] incomingColors = new Color[] { Color.red};
+    public Color[] incomingColors = new Color[] { };
     public Color[] shuffledColors;
-    public TextMeshProUGUI incomingColorText;
+    //public TextMeshProUGUI incomingColorText;
+    public GameLogicScript gameLogicScript;
+    public ColorUtilsScript colorUtilsScript;
+    public Image ball;
     private Color incomingBallColor;
     [SerializeField]
 
@@ -29,17 +32,19 @@ public class PowerBarsManager : MonoBehaviour
 
     void Start()
     {
-        Color[] shuffledIncomingColors = ShuffleArray(colors);
+        gameLogicScript = GameObject.FindGameObjectWithTag("Logic").GetComponent<GameLogicScript>();
+        colorUtilsScript = GameObject.FindGameObjectWithTag("Logic").GetComponent<ColorUtilsScript>();
+
+        Color[] shuffledIncomingColors = colorUtilsScript.ShuffleArray(colors);
         incomingColors = shuffledIncomingColors;
         incomingBallColor = incomingColors[UnityEngine.Random.Range(0, incomingColors.Length)];
-        //GameObject singleObject = GameObject.FindWithTag("BallLog");
-        //incomingColorText = singleObject;
-        incomingColorText.text = "Incoming Ball : "+ GetColorName(incomingBallColor).ToString();
-        Debug.Log("incoming colors" + GetColorName(incomingBallColor));
-        shuffledColors = ShuffleArray(colors);
+        Debug.Log("incoming colors 1" + colorUtilsScript.GetColorName(incomingBallColor));
+        ball.color = incomingBallColor;
+        //incomingColorText.text = "Incoming Ball : "+ colorUtilsScript.GetColorName(incomingBallColor).ToString();
+        Debug.Log("incoming colors 2" + colorUtilsScript.GetColorName(incomingBallColor));
+        shuffledColors = colorUtilsScript.ShuffleArray(colors);
         float totalColor = shuffledColors.Length;
         powerBarSingle.maxValue = totalColor;
-        //powerBarSingle.value = 1;
         float temptValue = totalColor/2;
         int index = 0;
         foreach (Color color in shuffledColors)
@@ -95,31 +100,25 @@ public class PowerBarsManager : MonoBehaviour
             // z rotation value needed to be -90 to 90
             float zRotation = parseEulerZ(powerBarSingleWithHandle.handleRect.transform.localEulerAngles.z);
             setSelectedIndex(zRotation);
-            Color selectedColor = getSelectedColor(selectedPointerIndex,shuffledColors);
-            bool isSameColor = checkIsSameColor(incomingBallColor, selectedColor);
-            incomingColorText.text = "Hit status :  " + isSameColor;
+            Color selectedColor = colorUtilsScript.getSelectedColor(selectedPointerIndex,shuffledColors);
+            bool isSameColor = colorUtilsScript.checkIsSameColor(incomingBallColor, selectedColor);
+            //incomingColorText.text = "Hit status :  " + isSameColor; 
+            if (!isSameColor)
+            {
+                Debug.Log("GAme over");
+                gameLogicScript.gameOver();
+            }
+            else {
+                gameLogicScript.hitSuccess(10);
+                isRotating = true;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isRotating = true;
-        }
-           
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    isRotating = true;
+        //}
     }
 
-
-    Color[] ShuffleArray(Color[] array)
-    {
-        System.Random random = new System.Random(); // Use System.Random for consistency
-        for (int i = array.Length - 1; i > 0; i--)
-        {
-            int j = random.Next(i + 1); // Random index between 0 and i
-            // Swap elements at i and j
-            var temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
-        return array;
-    }
     float[] getPointerPositionArray(float start, float decrement, int length)
     {
         float[] array = new float[length+1];
@@ -148,25 +147,6 @@ public class PowerBarsManager : MonoBehaviour
                 index++;
         }    
     }
-    Color getSelectedColor(int index,Color[] colorsArray) {
-        return colorsArray[index];
-    }
-    bool checkIsSameColor(Color incomingColor, Color selectedColor) {
-        return incomingColor.Equals(selectedColor);
-    }
-    string GetColorName(Color color)
-    {
-        if (color == Color.red) return "Red";
-        if (color == Color.green) return "Green";
-        if (color == Color.blue) return "Blue";
-        if (color == Color.white) return "White";
-        if (color == Color.black) return "Black";
-        if (color == Color.yellow) return "Yellow";
-        if (color == Color.cyan) return "Cyan";
-        if (color == Color.magenta) return "Magenta";
-
-        return "Unknown";
-    }
     float parseEulerZ(float localEulerZ)
     {
         if (localEulerZ >= 270 && localEulerZ <= 360)
@@ -174,5 +154,9 @@ public class PowerBarsManager : MonoBehaviour
             return localEulerZ - 360;
         }
         else return localEulerZ;
+    }
+    public void Reset()
+    {
+        
     }
 }

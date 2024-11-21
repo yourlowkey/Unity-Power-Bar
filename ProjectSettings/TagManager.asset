@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - BallLog
+  - Logic
   layers:
   - Default
   - TransparentFX
