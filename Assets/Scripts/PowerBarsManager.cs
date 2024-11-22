@@ -39,6 +39,12 @@ public class PowerBarsManager : MonoBehaviour
         incomingColors = shuffledIncomingColors;
         incomingBallColor = incomingColors[UnityEngine.Random.Range(0, incomingColors.Length)];
         Debug.Log("incoming colors 1" + colorUtilsScript.GetColorName(incomingBallColor));
+        //if (elapsedTime < duration)
+        //{
+        //    elapsedTime += Time.deltaTime;
+        //    float t = elapsedTime / duration;  // Calculate interpolation factor
+        //    ball.color = Color.Lerp(incomingBallColor, incomingBallColor, t);  // Gradually change the color
+        //}
         ball.color = incomingBallColor;
         //incomingColorText.text = "Incoming Ball : "+ colorUtilsScript.GetColorName(incomingBallColor).ToString();
         Debug.Log("incoming colors 2" + colorUtilsScript.GetColorName(incomingBallColor));
@@ -106,6 +112,7 @@ public class PowerBarsManager : MonoBehaviour
             if (!isSameColor)
             {
                 Debug.Log("GAme over");
+                //gameObject.SetActive(false); 
                 gameLogicScript.gameOver();
             }
             else {

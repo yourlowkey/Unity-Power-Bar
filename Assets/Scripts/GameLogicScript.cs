@@ -13,8 +13,13 @@ public class GameLogicScript : MonoBehaviour
     public TMPro.TextMeshProUGUI scoreText;
     public GameObject powerBarAndBall;
     public GameObject levelScene;
-
+    public Canvas hitSuccessWrapper;
+    public Canvas hitFailWrapper;
+    public Canvas hitTimeoutWrapper;
+    public int levelBallComing = 5;
+    private int levelBallComingCount = 0;
     private GameObject currentPowerBarAndBall;
+
     void Start()
     {
         currentPowerBarAndBall = Instantiate(powerBarAndBall,levelScene.transform);
@@ -26,23 +31,25 @@ public class GameLogicScript : MonoBehaviour
     {
         levelScore += scoreToAdd;
         scoreText.text = levelScore.ToString();
-        //powerBarAndBall.SetActive(false);
         Destroy(currentPowerBarAndBall);
+        levelBallComingCount += 1;
+        if(levelBallComingCount == levelBallComing)
+        {
+            //out level logic
+        }
         //set active ball hit status UI
-
+        hitSuccessWrapper.gameObject.SetActive(true);
         //re instantiate ball and bar wrapper
         StartCoroutine(activeBallAndBarAfterTimeout(1.5f));
     }
     public void restartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("Gamne restart");
         //Destroy(gameOverScreen);
         gameOverScreen.SetActive(false);
         Destroy(currentPowerBarAndBall);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //set active ball hit status UI
-
+        
         //re instantiate ball and bar wrapper
         StartCoroutine(activeBallAndBarAfterTimeout(0f));
     }
@@ -50,18 +57,53 @@ public class GameLogicScript : MonoBehaviour
     {
         levelScore = 0;
         scoreText.text = levelScore.ToString();
-        //powerBarAndBall.SetActive(false);
-        //Instantiate(gameOverScreen);
-        gameOverScreen.SetActive(true);
+        currentPowerBarAndBall.SetActive(false);
+        // set active miss ball anim
+        hitFailWrapper.gameObject.SetActive(true);
+        StartCoroutine(missBallUIAfterTimeout(1.5f));
+    }
+    public void gameOverByTime()
+    {
+        levelScore = 0;
+        scoreText.text = levelScore.ToString();
+        currentPowerBarAndBall.SetActive(false);
+        //set time out anim
+        hitTimeoutWrapper.gameObject.SetActive(true);
+        StartCoroutine(ballTimeoutUIAfterTimeout(1.5f));
+
     }
 
+    IEnumerator missBallUIAfterTimeout(float timeout)
+    {
+        // Wait for the specified time
+        yield return new WaitForSeconds(timeout);
+
+        // Code to execute after the timeout
+        hitFailWrapper.gameObject.SetActive(false);
+        gameOverScreen.SetActive(true);
+
+
+    }
     IEnumerator activeBallAndBarAfterTimeout(float timeout)
     {
         // Wait for the specified time
         yield return new WaitForSeconds(timeout);
 
         // Code to execute after the timeout
+        hitSuccessWrapper.gameObject.SetActive(false);
         currentPowerBarAndBall = Instantiate(powerBarAndBall, levelScene.transform);
         currentPowerBarAndBall.SetActive(true);
     }
+    IEnumerator ballTimeoutUIAfterTimeout(float timeout)
+    {
+        // Wait for the specified time
+        yield return new WaitForSeconds(timeout);
+
+        // Code to execute after the timeout
+        hitTimeoutWrapper.gameObject.SetActive(false);
+        gameOverScreen.SetActive(true);
+
+
+    }
+
 }

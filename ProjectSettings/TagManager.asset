@@ -6,6 +6,9 @@ TagManager:
   tags:
   - BallLog
   - Logic
+  - HitSuccess
+  - HitFaill
+  - HitTimeout
   layers:
   - Default
   - TransparentFX
