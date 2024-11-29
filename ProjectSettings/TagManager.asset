@@ -9,6 +9,7 @@ TagManager:
   - HitSuccess
   - HitFaill
   - HitTimeout
+  - LevelComplete
   layers:
   - Default
   - TransparentFX

@@ -1,10 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
-using System;
-using UnityEngine.Windows;
 using System.Collections;
-using Unity.VisualScripting;
 
 public class GameLogicScript : MonoBehaviour
 {
@@ -13,10 +9,15 @@ public class GameLogicScript : MonoBehaviour
     public TMPro.TextMeshProUGUI scoreText;
     public GameObject powerBarAndBall;
     public GameObject levelScene;
+    public GameObject ball;
     public Canvas hitSuccessWrapper;
     public Canvas hitFailWrapper;
     public Canvas hitTimeoutWrapper;
-    public int levelBallComing = 5;
+    public Canvas levelCompleteWrapper;
+    //get level from local storage
+    public int level = 0;
+    public int levelBallComing = 3;
+    public float ballDuration = 6.0f;
     private int levelBallComingCount = 0;
     private GameObject currentPowerBarAndBall;
 
@@ -29,16 +30,20 @@ public class GameLogicScript : MonoBehaviour
     }
     public void hitSuccess (int scoreToAdd)
     {
+        ball = currentPowerBarAndBall.transform.Find("Ball").gameObject;
+        BallController ballScript = ball.GetComponent<BallController>();
+        Debug.Log("current duration : " + ballScript.thisLevelDuration + "remaining time" + ballScript.timeRemaining);
         levelScore += scoreToAdd;
         scoreText.text = levelScore.ToString();
         Destroy(currentPowerBarAndBall);
         levelBallComingCount += 1;
-        if(levelBallComingCount == levelBallComing)
-        {
-            //out level logic
-        }
         //set active ball hit status UI
         hitSuccessWrapper.gameObject.SetActive(true);
+        if (levelBallComingCount == levelBallComing)
+        {
+            //out level logic
+            StartCoroutine(levelCompleteAfterTimeout(1.5f));
+        }else
         //re instantiate ball and bar wrapper
         StartCoroutine(activeBallAndBarAfterTimeout(1.5f));
     }
@@ -55,7 +60,7 @@ public class GameLogicScript : MonoBehaviour
     }
     public void gameOver()
     {
-        levelScore = 0;
+        //levelScore = 0;
         scoreText.text = levelScore.ToString();
         currentPowerBarAndBall.SetActive(false);
         // set active miss ball anim
@@ -64,7 +69,7 @@ public class GameLogicScript : MonoBehaviour
     }
     public void gameOverByTime()
     {
-        levelScore = 0;
+        //levelScore = 0;
         scoreText.text = levelScore.ToString();
         currentPowerBarAndBall.SetActive(false);
         //set time out anim
@@ -72,7 +77,13 @@ public class GameLogicScript : MonoBehaviour
         StartCoroutine(ballTimeoutUIAfterTimeout(1.5f));
 
     }
-
+    public void nextLevel()
+    {
+        level++;
+        levelCompleteWrapper.gameObject.SetActive(false);
+        currentPowerBarAndBall = Instantiate(powerBarAndBall, levelScene.transform);
+        currentPowerBarAndBall.SetActive(true);
+    }
     IEnumerator missBallUIAfterTimeout(float timeout)
     {
         // Wait for the specified time
@@ -104,6 +115,16 @@ public class GameLogicScript : MonoBehaviour
         gameOverScreen.SetActive(true);
 
 
+    }
+    IEnumerator levelCompleteAfterTimeout(float timeout)
+    {
+        // Wait for the specified time
+        yield return new WaitForSeconds(timeout);
+
+        // Code to execute after the timeout
+        hitSuccessWrapper.gameObject.SetActive(false);
+        levelBallComingCount = 0;
+        levelCompleteWrapper.gameObject.SetActive(true);
     }
 
 }
