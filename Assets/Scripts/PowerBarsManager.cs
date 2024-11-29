@@ -32,11 +32,11 @@ public class PowerBarsManager : MonoBehaviour
 
     void Start()
     {
-        //set pointer speed by level
-        pointerSpeed = pointerSpeed + gameLogicScript.level * 2;
-
         gameLogicScript = GameObject.FindGameObjectWithTag("Logic").GetComponent<GameLogicScript>();
         colorUtilsScript = GameObject.FindGameObjectWithTag("Logic").GetComponent<ColorUtilsScript>();
+
+        //set pointer speed by level
+        pointerSpeed = pointerSpeed + gameLogicScript.level * 2;
 
         Color[] shuffledIncomingColors = colorUtilsScript.ShuffleArray(colors);
         incomingColors = shuffledIncomingColors;

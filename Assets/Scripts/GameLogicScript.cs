@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameLogicScript : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class GameLogicScript : MonoBehaviour
     public int level = 0;
     public int levelBallComing = 3;
     public float ballDuration = 6.0f;
+    public Sprite[] hitStatusSprite ;
+    public Sprite perfect;
     private int levelBallComingCount = 0;
     private GameObject currentPowerBarAndBall;
 
@@ -33,6 +37,8 @@ public class GameLogicScript : MonoBehaviour
         ball = currentPowerBarAndBall.transform.Find("Ball").gameObject;
         BallController ballScript = ball.GetComponent<BallController>();
         Debug.Log("current duration : " + ballScript.thisLevelDuration + "remaining time" + ballScript.timeRemaining);
+       
+        setHitStatusUI(ballScript.timeRemaining, ballScript.thisLevelDuration);
         levelScore += scoreToAdd;
         scoreText.text = levelScore.ToString();
         Destroy(currentPowerBarAndBall);
@@ -125,6 +131,71 @@ public class GameLogicScript : MonoBehaviour
         hitSuccessWrapper.gameObject.SetActive(false);
         levelBallComingCount = 0;
         levelCompleteWrapper.gameObject.SetActive(true);
+    }
+    string getHitStatus (float timeRemaining , float duration)
+    {
+        if (timeRemaining > duration * 3 / 4 && timeRemaining <= duration)
+        {
+            return "PERFECT";
+        }
+        if (timeRemaining > duration * 1 / 2 && timeRemaining <= duration * 3 / 4)
+        {
+            return "GREAT";
+        }
+
+        if (timeRemaining > duration * 1 / 4 && timeRemaining <= duration * 1 / 2)
+        {
+            return "GOOD";
+        }
+        else return "NOTBAD";
+    }
+    void setHitStatusUI(float timeRemaining, float duration)
+    {
+        Image hitSuccessUI = hitSuccessWrapper.transform.Find("Image").GetComponent<Image>();
+        Sprite hitSuccessSprite= hitSuccessUI.sprite;
+        //switch (getHitStatus(timeRemaining, duration))
+        //{
+        //    case "NOTBAD":
+        //        Debug.Log("hitttttt");
+        //        hitSuccessSprite = hitStatusSprite[0]; break;
+        //    case "GOOD":
+        //        Debug.Log("hitttttt");
+        //        hitSuccessSprite = hitStatusSprite[1]; break;
+        //    case "GREAT":
+        //        Debug.Log("hitttttt");
+        //        hitSuccessSprite = hitStatusSprite[2]; break;
+        //    case "PERFECT":
+        //        Debug.Log("hitttttt");
+        //        hitSuccessSprite = hitStatusSprite[3]; break;
+        //}
+        string hitStatus = getHitStatus(timeRemaining , duration);
+        if (hitStatus=="NOTBAD")
+        {
+            Debug.Log("hitttttt" + hitStatus);
+            hitSuccessSprite = hitStatusSprite[0];
+        }
+        if (hitStatus == "GOOD")
+        {
+            Debug.Log("hitttttt" + hitStatus);
+            hitSuccessSprite = hitStatusSprite[1];
+        }
+        if (hitStatus == "GREAT")
+        {
+            Debug.Log("hitttttt" + hitStatus);
+            hitSuccessSprite = hitStatusSprite[2];
+        }
+        if (hitStatus == "PERFECT")
+        {
+            Debug.Log("hitttttt" + hitStatus);
+            hitSuccessSprite = hitStatusSprite[3];
+        }
+
+        
+        TextMeshProUGUI textMeshProUGUI = hitSuccessWrapper.transform.Find("HitSuccessText").GetComponent<TextMeshProUGUI>();
+        textMeshProUGUI.text = getHitStatus(timeRemaining, duration);
+        
+        //hitSuccessUI.color = Color.black;
+        //}
     }
 
 }
