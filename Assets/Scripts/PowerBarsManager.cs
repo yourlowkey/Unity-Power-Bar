@@ -61,9 +61,11 @@ public class PowerBarsManager : MonoBehaviour
             Slider clonePowerBarSingle = Instantiate(powerBarSingle,transform);
             clonePowerBarSingle.interactable = false;
             Transform slideArea = clonePowerBarSingle.transform.Find("Handle Slide Area");
-            if(index != 0)
+            Transform background = clonePowerBarSingle.transform.Find("Background");
+            if (index != totalColor-1)
             {
                 slideArea.gameObject.SetActive(false);
+                //background.gameObject.SetActive(false);
                 //Destroy(slideArea.gameObject);
             }
             
@@ -78,8 +80,10 @@ public class PowerBarsManager : MonoBehaviour
                 }
             }
       
-            if(index == 0)
+            if(index == totalColor-1)
             {
+                Transform handle = slideArea.transform.Find("Handle");
+                slideArea.position.x = 1
                 powerBarSingleWithHandle = clonePowerBarSingle;
             }
             clonePowerBarSingle.value = temptValue;

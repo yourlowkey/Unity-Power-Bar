@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameLogicScript : MonoBehaviour
 {
+    [SerializeField]
     public int levelScore;
     public GameObject gameOverScreen;
     public TMPro.TextMeshProUGUI scoreText;
@@ -20,8 +22,7 @@ public class GameLogicScript : MonoBehaviour
     public int level = 0;
     public int levelBallComing = 3;
     public float ballDuration = 6.0f;
-    public Sprite[] hitStatusSprite ;
-    public Sprite perfect;
+    public List<Sprite> hitStatusSprite ;
     private int levelBallComingCount = 0;
     private GameObject currentPowerBarAndBall;
 
@@ -172,25 +173,30 @@ public class GameLogicScript : MonoBehaviour
         if (hitStatus=="NOTBAD")
         {
             Debug.Log("hitttttt" + hitStatus);
-            hitSuccessSprite = hitStatusSprite[0];
+            hitSuccessUI.sprite = hitStatusSprite[3];
+            hitSuccessUI.SetNativeSize();
         }
         if (hitStatus == "GOOD")
         {
             Debug.Log("hitttttt" + hitStatus);
-            hitSuccessSprite = hitStatusSprite[1];
+            hitSuccessUI.sprite = hitStatusSprite[2];
+            hitSuccessUI.SetNativeSize();
         }
         if (hitStatus == "GREAT")
         {
             Debug.Log("hitttttt" + hitStatus);
-            hitSuccessSprite = hitStatusSprite[2];
+            hitSuccessUI.sprite = hitStatusSprite[1];
+            hitSuccessUI.SetNativeSize();
         }
         if (hitStatus == "PERFECT")
         {
             Debug.Log("hitttttt" + hitStatus);
-            hitSuccessSprite = hitStatusSprite[3];
+            hitSuccessUI.sprite = hitStatusSprite[0];
+            hitSuccessUI.SetNativeSize();
+
         }
 
-        
+
         TextMeshProUGUI textMeshProUGUI = hitSuccessWrapper.transform.Find("HitSuccessText").GetComponent<TextMeshProUGUI>();
         textMeshProUGUI.text = getHitStatus(timeRemaining, duration);
         
