@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerBarSingle: {fileID: 6475827725731111194, guid: 40c14f4f56dd4d7439a488b64b62042f, type: 3}
-  powerBarSingleWithHandle: {fileID: 6475827725731111194, guid: 40c14f4f56dd4d7439a488b64b62042f, type: 3}
+  powerBarSingleWithHandle: {fileID: 0}
   pointerSpeed: 100
   incomingColors:
   - {r: 1, g: 0, b: 0, a: 1}

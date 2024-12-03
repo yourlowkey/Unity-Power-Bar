@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class PowerBarController : MonoBehaviour
 {
-    
+    public GameObject handleSlideArea;
     void Start()
     {
     }

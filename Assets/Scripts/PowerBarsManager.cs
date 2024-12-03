@@ -15,6 +15,7 @@ public class PowerBarsManager : MonoBehaviour
     public ColorUtilsScript colorUtilsScript;
     public Image ball;
     private Color incomingBallColor;
+    PowerBarController powerBarController;
     [SerializeField]
 
     private Color[] colors = new Color[]
@@ -65,10 +66,16 @@ public class PowerBarsManager : MonoBehaviour
             if (index != totalColor-1)
             {
                 slideArea.gameObject.SetActive(false);
-                //background.gameObject.SetActive(false);
+                background.gameObject.SetActive(false);
                 //Destroy(slideArea.gameObject);
             }
-            
+            else
+            {
+                //slideArea.position = new Vector3(0,0,0);
+
+                powerBarSingleWithHandle = clonePowerBarSingle;
+            }
+
             if (clonePowerBarSingle.fillRect != null)
             {
                 Image fillImage = clonePowerBarSingle.fillRect.GetComponent<Image>();
@@ -80,12 +87,7 @@ public class PowerBarsManager : MonoBehaviour
                 }
             }
       
-            if(index == totalColor-1)
-            {
-                Transform handle = slideArea.transform.Find("Handle");
-                slideArea.position.x = 1
-                powerBarSingleWithHandle = clonePowerBarSingle;
-            }
+           
             clonePowerBarSingle.value = temptValue;
             Debug.Log("value"+ temptValue);
             temptValue = temptValue - 0.5f;
@@ -99,19 +101,21 @@ public class PowerBarsManager : MonoBehaviour
     {
         float maxZ = -90f;
         float minZ = 90f;
+        powerBarController = powerBarSingleWithHandle.GetComponent<PowerBarController>();
 
         if (isRotating)
         {
             // Rotate object (example rotation)
             float zPosition = Mathf.PingPong(Time.time* pointerSpeed, minZ - maxZ) +maxZ  ;
-            powerBarSingleWithHandle.handleRect.transform.localEulerAngles = new Vector3(0, 0, zPosition);
+            powerBarController.handleSlideArea.transform.localEulerAngles = new Vector3(0, 0, zPosition);
+            //powerBarSingleWithHandle.handleRect.transform.localEulerAngles = new Vector3(0, 0, zPosition);
         }
         
         if (Input.anyKeyDown)
         {
             isRotating = false;
             // z rotation value needed to be -90 to 90
-            float zRotation = parseEulerZ(powerBarSingleWithHandle.handleRect.transform.localEulerAngles.z);
+            float zRotation = parseEulerZ(powerBarController.handleSlideArea.transform.localEulerAngles.z);
             setSelectedIndex(zRotation);
             Color selectedColor = colorUtilsScript.getSelectedColor(selectedPointerIndex,shuffledColors);
             bool isSameColor = colorUtilsScript.checkIsSameColor(incomingBallColor, selectedColor);
