@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9f092326ba7755248a366142cae2cf48
+guid: c7fef0775abcc73488cf6ad543b619f7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6695950386315148514
-    second: BG_0
+      213: 3792230597600407935
+    second: UI-baseball-merge-2_0147_Folder-1 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,17 +109,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BG_0
+      name: UI-baseball-merge-2_0147_Folder-1 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1080
-        height: 2160
+        width: 453
+        height: 611
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e13cb0ea9943313a0800000000000000
-      internalID: -6695950386315148514
+      spriteID: f71f65ce2a5b0a430800000000000000
+      internalID: 3792230597600407935
       vertices: []
       indices: 
       edges: []
@@ -147,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      UI-baseball-merge-2_0147_Folder-1 1_0: 3792230597600407935
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

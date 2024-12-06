@@ -60,7 +60,7 @@ public class GameLogicScript : MonoBehaviour
         //Destroy(gameOverScreen);
         gameOverScreen.SetActive(false);
         Destroy(currentPowerBarAndBall);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         
         //re instantiate ball and bar wrapper
         StartCoroutine(activeBallAndBarAfterTimeout(0f));
@@ -71,7 +71,11 @@ public class GameLogicScript : MonoBehaviour
         scoreText.text = levelScore.ToString();
         currentPowerBarAndBall.SetActive(false);
         // set active miss ball anim
+        
         hitFailWrapper.gameObject.SetActive(true);
+        Image hitFailUI = hitFailWrapper.transform.Find("Image").GetComponent<Image>();
+        hitFailUI.sprite = hitStatusSprite[4];
+        hitFailUI.SetNativeSize();
         StartCoroutine(missBallUIAfterTimeout(1.5f));
     }
     public void gameOverByTime()
@@ -81,6 +85,9 @@ public class GameLogicScript : MonoBehaviour
         currentPowerBarAndBall.SetActive(false);
         //set time out anim
         hitTimeoutWrapper.gameObject.SetActive(true);
+        Image hitTimeOutUI = hitTimeoutWrapper.transform.Find("Image").GetComponent<Image>();
+        hitTimeOutUI.sprite = hitStatusSprite[4];
+        hitTimeOutUI.SetNativeSize();
         StartCoroutine(ballTimeoutUIAfterTimeout(1.5f));
 
     }
@@ -195,11 +202,7 @@ public class GameLogicScript : MonoBehaviour
             hitSuccessUI.SetNativeSize();
 
         }
-
-
-        TextMeshProUGUI textMeshProUGUI = hitSuccessWrapper.transform.Find("HitSuccessText").GetComponent<TextMeshProUGUI>();
-        textMeshProUGUI.text = getHitStatus(timeRemaining, duration);
-        
+  
         //hitSuccessUI.color = Color.black;
         //}
     }
